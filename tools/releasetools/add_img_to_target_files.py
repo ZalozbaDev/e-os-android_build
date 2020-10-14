@@ -781,16 +781,22 @@ def AddImagesToTargetFiles(filename):
 
   banner("boot")
   # common.GetBootableImage() returns the image directly if present.
-  boot_image = common.GetBootableImage(
-      "IMAGES/boot.img", "boot.img", OPTIONS.input_tmp, "BOOT")
-  # boot.img may be unavailable in some targets (e.g. aosp_arm64).
-  if boot_image:
-    partitions['boot'] = os.path.join(OPTIONS.input_tmp, "IMAGES", "boot.img")
-    if not os.path.exists(partitions['boot']):
-      boot_image.WriteToDir(OPTIONS.input_tmp)
-      if output_zip:
-        boot_image.AddToZip(output_zip)
-
+  pack_bootimage_txt = os.path.join(
+      OPTIONS.input_tmp, "META", "pack_bootimage.txt")
+  if os.path.exists(pack_bootimage_txt):
+    with open(pack_bootimage_txt) as f:
+      AddPackBootImage(output_zip, f.readlines())
+  else:
+    boot_image = common.GetBootableImage(
+        "IMAGES/boot.img", "boot.img", OPTIONS.input_tmp, "BOOT")
+    print("OPTIONS.input_tmp "+OPTIONS.input_tmp)
+    # boot.img may be unavailable in some targets (e.g. aosp_arm64).
+    if boot_image:
+      partitions['boot'] = os.path.join(OPTIONS.input_tmp, "IMAGES", "boot.img")
+      if not os.path.exists(partitions['boot']):
+        boot_image.WriteToDir(OPTIONS.input_tmp)
+        if output_zip:
+          boot_image.AddToZip(output_zip)
   recovery_image = None
   if has_recovery:
     banner("recovery")
@@ -922,6 +928,23 @@ def AddImagesToTargetFiles(filename):
     if OPTIONS.replace_updated_files_list:
       ReplaceUpdatedFiles(output_zip.filename,
                           OPTIONS.replace_updated_files_list)
+
+
+def AddPackBootImage(output_zip, images):
+  image = images[0]
+  img_name = image.strip()
+  _, ext = os.path.splitext(img_name)
+  if not ext:
+    img_name += ".img"
+  img_boot_path = os.path.join(OPTIONS.input_tmp, "IMAGES", "boot.img")
+  shutil.copy(img_name, img_boot_path)
+  prebuilt_path = os.path.join(OPTIONS.input_tmp, "BOOT", "boot.img")
+  assert os.path.exists(img_boot_path), \
+      "Failed to find %s at %s" % (img_name, img_boot_path)
+  if output_zip:
+    common.ZipWrite(output_zip, img_boot_path, "IMAGES/" + img_name)
+  else:
+    shutil.copy(img_boot_path, prebuilt_path)
 
 
 def main(argv):

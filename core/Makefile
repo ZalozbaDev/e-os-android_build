@@ -4160,6 +4160,14 @@ endif # BOARD_PREBUILT_DTBOIMAGE
 	@# INSTALLED_RADIOIMAGE_TARGET.
 	$(hide) $(foreach part,$(BOARD_PACK_RADIOIMAGES), \
 	    echo $(part) >> $(zip_root)/META/pack_radioimages.txt;)
+
+
+
+	@# The boot image in BOARD_PACK_BOOTIMAGE will be additionally copied from RADIO/ into
+	@# IMAGES/, which then will be added into <product>-img.zip.
+	$(hide) $(foreach part,$(BOARD_PACK_BOOTIMAGE), \
+	    echo $(part) >> $(zip_root)/META/pack_bootimage.txt;)
+
 	@# Run fs_config on all the system, vendor, boot ramdisk,
 	@# and recovery ramdisk files in the zip, and save the output
 ifdef BUILDING_SYSTEM_IMAGE
