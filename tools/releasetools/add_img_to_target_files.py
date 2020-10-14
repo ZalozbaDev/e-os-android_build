@@ -780,6 +780,7 @@ def AddImagesToTargetFiles(filename):
     logger.info("\n\n++++ %s  ++++\n\n", s)
 
   banner("boot")
+  boot_image = None
   # common.GetBootableImage() returns the image directly if present.
   pack_bootimage_txt = os.path.join(
       OPTIONS.input_tmp, "META", "pack_bootimage.txt")
