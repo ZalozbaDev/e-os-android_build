@@ -3980,6 +3980,7 @@ endif
 	$(hide) cp $(SELINUX_FC) $(zip_root)/META/file_contexts.bin
 	$(hide) echo "recovery_api_version=$(PRIVATE_RECOVERY_API_VERSION)" > $(zip_root)/META/misc_info.txt
 	$(hide) echo "fstab_version=$(PRIVATE_RECOVERY_FSTAB_VERSION)" >> $(zip_root)/META/misc_info.txt
+
 ifdef BOARD_FLASH_BLOCK_SIZE
 	$(hide) echo "blocksize=$(BOARD_FLASH_BLOCK_SIZE)" >> $(zip_root)/META/misc_info.txt
 endif
@@ -3989,6 +3990,12 @@ endif
 ifeq ($(INSTALLED_RECOVERYIMAGE_TARGET),)
 	$(hide) echo "no_recovery=true" >> $(zip_root)/META/misc_info.txt
 endif
+ifeq ($(TARGET_NO_BOOTIMAGE),true)
+	$(hide) echo "no_boot=true" >> $(zip_root)/META/misc_info.txt
+else
+	$(hide) echo "no_boot=false" >> $(zip_root)/META/misc_info.txt
+endif
+
 ifdef BOARD_INCLUDE_RECOVERY_DTBO
 	$(hide) echo "include_recovery_dtbo=true" >> $(zip_root)/META/misc_info.txt
 endif
