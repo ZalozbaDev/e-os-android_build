@@ -307,11 +307,14 @@ else
 BUILD_KEYS := dev-keys
 endif
 
+
 ifndef RELEASE_TYPE
-  RELEASE_TYPE := $(BUILD_KEYS)
+  BUILD_DISPLAY_KEYS := $(BUILD_KEYS)
+else
+  BUILD_DISPLAY_KEYS := $(RELEASE_TYPE)
 endif
 
-BUILD_VERSION_TAGS += $(RELEASE_TYPE)
+BUILD_VERSION_TAGS += $(BUILD_DISPLAY_KEYS)
 BUILD_VERSION_TAGS := $(subst $(space),$(comma),$(sort $(BUILD_VERSION_TAGS)))
 
 # A human-readable string that descibes this build in detail.
