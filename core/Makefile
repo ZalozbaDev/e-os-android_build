@@ -369,9 +369,9 @@ ifeq ($(TARGET_BUILD_VARIANT),user)
 
   # Dev. branches should have DISPLAY_BUILD_NUMBER set
   ifeq (true,$(DISPLAY_BUILD_NUMBER))
-    BUILD_DISPLAY_ID := $(BUILD_ID).$(BUILD_NUMBER_FROM_FILE) $(RELEASE_TYPE)
+    BUILD_DISPLAY_ID := $(BUILD_ID).$(BUILD_NUMBER_FROM_FILE) $(BUILD_DISPLAY_KEYS)
   else
-    BUILD_DISPLAY_ID := $(BUILD_ID) $(RELEASE_TYPE)
+    BUILD_DISPLAY_ID := $(BUILD_ID) $(BUILD_DISPLAY_KEYS)
   endif
 else
   # Non-user builds should show detailed build information
