@@ -306,7 +306,12 @@ BUILD_KEYS := test-keys
 else
 BUILD_KEYS := dev-keys
 endif
-BUILD_VERSION_TAGS += $(BUILD_KEYS)
+
+ifndef RELEASE_TYPE
+  RELEASE_TYPE := $(BUILD_KEYS)
+endif
+
+BUILD_VERSION_TAGS += $(RELEASE_TYPE)
 BUILD_VERSION_TAGS := $(subst $(space),$(comma),$(sort $(BUILD_VERSION_TAGS)))
 
 # A human-readable string that descibes this build in detail.
@@ -361,9 +366,9 @@ ifeq ($(TARGET_BUILD_VARIANT),user)
 
   # Dev. branches should have DISPLAY_BUILD_NUMBER set
   ifeq (true,$(DISPLAY_BUILD_NUMBER))
-    BUILD_DISPLAY_ID := $(BUILD_ID).$(BUILD_NUMBER_FROM_FILE) $(BUILD_KEYS)
+    BUILD_DISPLAY_ID := $(BUILD_ID).$(BUILD_NUMBER_FROM_FILE) $(RELEASE_TYPE)
   else
-    BUILD_DISPLAY_ID := $(BUILD_ID) $(BUILD_KEYS)
+    BUILD_DISPLAY_ID := $(BUILD_ID) $(RELEASE_TYPE)
   endif
 else
   # Non-user builds should show detailed build information
