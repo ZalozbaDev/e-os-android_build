@@ -588,7 +588,8 @@ endif  # BOARD_USES_PRODUCTIMAGE
 	$(hide) echo "#" >> $@; \
 	        echo "# ADDITIONAL PRODUCT PROPERTIES" >> $@; \
 	        echo "#" >> $@; \
-	        echo "ro.build.characteristics=$(TARGET_AAPT_CHARACTERISTICS)" >> $@;
+	        echo "ro.build.characteristics=$(TARGET_AAPT_CHARACTERISTICS)" >> $@; \
+                echo "ro.build.display.id=$(BUILD_DISPLAY_ID)" >> $@;
 	$(hide) $(foreach line,$(FINAL_PRODUCT_PROPERTIES), \
 	    echo "$(line)" >> $@;)
 	$(hide) build/make/tools/post_process_props.py $@
