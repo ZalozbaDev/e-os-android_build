@@ -307,7 +307,8 @@ else
 BUILD_KEYS := dev-keys
 endif
 
-
+#BUILD_DISPLAY_KEYS is used in etc/build.prop and product build.prop to avoid override by vendor, 
+#so ro.build.display.id will be set twice, only product build.prop will be used at the end
 ifndef RELEASE_TYPE
   BUILD_DISPLAY_KEYS := $(BUILD_KEYS)
 else
