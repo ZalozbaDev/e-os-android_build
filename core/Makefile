@@ -306,7 +306,16 @@ BUILD_KEYS := test-keys
 else
 BUILD_KEYS := dev-keys
 endif
-BUILD_VERSION_TAGS += $(BUILD_KEYS)
+
+#BUILD_DISPLAY_KEYS is used in etc/build.prop and product build.prop to avoid override by vendor, 
+#so ro.build.display.id will be set twice, only product build.prop will be used at the end
+ifndef RELEASE_TYPE
+  BUILD_DISPLAY_KEYS := $(BUILD_KEYS)
+else
+  BUILD_DISPLAY_KEYS := $(RELEASE_TYPE)-keys
+endif
+
+BUILD_VERSION_TAGS += $(BUILD_DISPLAY_KEYS)
 BUILD_VERSION_TAGS := $(subst $(space),$(comma),$(sort $(BUILD_VERSION_TAGS)))
 
 # A human-readable string that descibes this build in detail.
@@ -361,9 +370,9 @@ ifeq ($(TARGET_BUILD_VARIANT),user)
 
   # Dev. branches should have DISPLAY_BUILD_NUMBER set
   ifeq (true,$(DISPLAY_BUILD_NUMBER))
-    BUILD_DISPLAY_ID := $(BUILD_ID).$(BUILD_NUMBER_FROM_FILE) $(BUILD_KEYS)
+    BUILD_DISPLAY_ID := $(BUILD_ID).$(BUILD_NUMBER_FROM_FILE) $(BUILD_DISPLAY_KEYS)
   else
-    BUILD_DISPLAY_ID := $(BUILD_ID) $(BUILD_KEYS)
+    BUILD_DISPLAY_ID := $(BUILD_ID) $(BUILD_DISPLAY_KEYS)
   endif
 else
   # Non-user builds should show detailed build information
@@ -580,7 +589,8 @@ endif  # BOARD_USES_PRODUCTIMAGE
 	$(hide) echo "#" >> $@; \
 	        echo "# ADDITIONAL PRODUCT PROPERTIES" >> $@; \
 	        echo "#" >> $@; \
-	        echo "ro.build.characteristics=$(TARGET_AAPT_CHARACTERISTICS)" >> $@;
+	        echo "ro.build.characteristics=$(TARGET_AAPT_CHARACTERISTICS)" >> $@; \
+                echo "ro.build.display.id=$(BUILD_DISPLAY_ID)" >> $@;
 	$(hide) $(foreach line,$(FINAL_PRODUCT_PROPERTIES), \
 	    echo "$(line)" >> $@;)
 	$(hide) build/make/tools/post_process_props.py $@
