@@ -228,13 +228,16 @@ BUILD_KEYS := dev-keys
 endif
 
 ifndef RELEASE_TYPE
-  BUILD_DISPLAY_KEYS := $(BUILD_KEYS)
+ifeq ($(DEFAULT_SYSTEM_DEV_CERTIFICATE),build/make/target/product/security/testkey)
+BUILD_RELEASE_TYPE := test-release
 else
-  BUILD_DISPLAY_KEYS := $(RELEASE_TYPE)-keys
+BUILD_RELEASE_TYPE := unknown-release
 endif
-
-BUILD_VERSION_TAGS += $(BUILD_DISPLAY_KEYS)
-
+else
+BUILD_RELEASE_TYPE := $(RELEASE_TYPE)-release
+endif
+BUILD_VERSION_TAGS += $(BUILD_KEYS)
+BUILD_VERSION_TAGS += $(BUILD_RELEASE_TYPE)
 BUILD_VERSION_TAGS := $(subst $(space),$(comma),$(sort $(BUILD_VERSION_TAGS)))
 
 # A human-readable string that descibes this build in detail.
@@ -289,9 +292,9 @@ ifeq ($(TARGET_BUILD_VARIANT),user)
 
   # Dev. branches should have DISPLAY_BUILD_NUMBER set
   ifeq (true,$(DISPLAY_BUILD_NUMBER))
-    BUILD_DISPLAY_ID := $(BUILD_ID).$(BUILD_NUMBER_FROM_FILE) $(BUILD_DISPLAY_KEYS)
+    BUILD_DISPLAY_ID := $(BUILD_ID).$(BUILD_NUMBER_FROM_FILE) $(BUILD_KEYS) $(BUILD_RELEASE_TYPE)
   else
-    BUILD_DISPLAY_ID := $(BUILD_ID) $(BUILD_DISPLAY_KEYS)
+    BUILD_DISPLAY_ID := $(BUILD_ID) $(BUILD_KEYS) $(BUILD_RELEASE_TYPE)
   endif
 else
   # Non-user builds should show detailed build information
