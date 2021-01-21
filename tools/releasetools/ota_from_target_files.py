@@ -715,6 +715,15 @@ def _WriteRecoveryImageToBoot(script, output_zip):
     # The "recovery.img" entry has been written into package earlier.
     script.WriteRawImage("/boot", "recovery.img")
 
+def WriteImage(image, dest, script, output_zip):
+  img_path = os.path.join(
+      OPTIONS.input_tmp, "IMAGES", image)
+  common.ZipWrite(
+      output_zip, img_path, image)
+  logger.info(
+      "adding image: using %s", image)
+  script.WriteRawImage("/"+dest, image)
+
 
 def HasRecoveryPatch(target_files_zip):
   namelist = [name for name in target_files_zip.namelist()]
@@ -1111,6 +1120,17 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
     script.RunBackup("restore", sysmount, target_info.get('use_dynamic_partitions') == "true")
   if boot_img != None:
     script.WriteRawImage("/boot", "boot.img")
+
+  pack_images = os.path.join(OPTIONS.input_tmp, "META", "pack_images.txt")
+  if os.path.exists(pack_images):
+    with open(pack_images, 'r') as f:
+      lines = f.readlines()
+    for line in lines:
+      print(line)
+      img_inf = line.strip().split(":")
+      
+      WriteImage(os.path.basename(img_inf[0]), img_inf[1], script, output_zip)
+
 
   script.ShowProgress(0.1, 10)
   device_specific.FullOTA_InstallEnd()

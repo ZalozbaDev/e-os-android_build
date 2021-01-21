@@ -4180,6 +4180,9 @@ endif # BOARD_PREBUILT_DTBOIMAGE
 	@# INSTALLED_RADIOIMAGE_TARGET.
 	$(hide) $(foreach part,$(BOARD_PACK_RADIOIMAGES), \
 	    echo $(part) >> $(zip_root)/META/pack_radioimages.txt;)
+	@# Any images specified will be added into ota.zip
+	$(hide) $(foreach part,$(BOARD_PACK_IMAGES), \
+	    echo $(part) >> $(zip_root)/META/pack_images.txt;)
 	@# Run fs_config on all the system, vendor, boot ramdisk,
 	@# and recovery ramdisk files in the zip, and save the output
 ifdef BUILDING_SYSTEM_IMAGE

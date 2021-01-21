@@ -920,6 +920,30 @@ def AddImagesToTargetFiles(filename):
   if os.path.exists(pack_radioimages_txt):
     with open(pack_radioimages_txt) as f:
       AddPackRadioImages(output_zip, f.readlines())
+  # images that need to be packed into IMAGES/, and product-img.zip.
+  pack_images = os.path.join(
+      OPTIONS.input_tmp, "META", "pack_images.txt")
+  if os.path.exists(pack_images):
+    banner("images")
+    with open(pack_images, 'r') as f:
+      lines = f.readlines()
+    for line in lines:
+      img_inf = line.strip().split(":")
+      img_path = img_inf[0].strip()
+      print("img_path" +img_path)
+      img_name = os.path.basename(img_path)
+      _, ext = os.path.splitext(img_name)
+      if not ext:
+        img_name += ".img"
+      prebuilt_path = os.path.join(OPTIONS.input_tmp, "IMAGES", img_name)
+      if os.path.exists(prebuilt_path):
+        print("%s already exists, no need to overwrite..." % (img_name,))
+        continue
+      if output_zip:
+        common.ZipWrite(output_zip, prebuilt_path,
+                        os.path.join("IMAGES", img_name))
+      else:
+        shutil.copy(img_path, prebuilt_path)
 
   if output_zip:
     common.ZipClose(output_zip)
