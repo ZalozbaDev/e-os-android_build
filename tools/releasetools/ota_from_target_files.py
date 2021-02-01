@@ -930,7 +930,7 @@ def GetBlockDifferences(target_zip, source_zip, target_info, source_info,
     assert blockimgdiff_version >= 3
 
   block_diff_dict = collections.OrderedDict()
-  partition_names = ["system", "vendor", "product", "odm", "system_ext"]
+  partition_names = ["vendor", "product", "odm", "system_ext"]
   for partition in partition_names:
     if not HasPartition(target_zip, partition):
       continue
@@ -945,7 +945,7 @@ def GetBlockDifferences(target_zip, source_zip, target_info, source_info,
     else:
       block_diff_dict[partition] = GetIncrementalBlockDifferenceForPartition(
           partition)
-  assert "system" in block_diff_dict
+#  assert "system" in block_diff_dict
 
   # Get the block diffs from the device specific script. If there is a
   # duplicate block diff for a partition, ignore the diff in the generic script
