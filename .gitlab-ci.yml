@@ -2,6 +2,6 @@ stages:
   - update-from-upstream
 
 include:
-  - project: 'e/priv/os/build'
+  - project: 'e/templates'
     ref: master
-    file: '/templates/.gitlab-ci-update-from-upstream.yml'
+    file: '/gitlab-ci/.gitlab-ci-import-updates-from-upstream.yml'
