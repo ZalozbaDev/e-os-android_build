@@ -32,6 +32,7 @@ PRODUCT_LOCALES := \
         cs_CZ \
         da_DK \
         de_DE \
+        dsb_DE \
         el_GR \
         en_AU \
         en_CA \
@@ -50,6 +51,7 @@ PRODUCT_LOCALES := \
         gu_IN \
         hi_IN \
         hr_HR \
+        hsb_DE \
         hu_HU \
         hy_AM \
         in_ID \
