@@ -206,8 +206,15 @@ BUILD_THUMBPRINT :=
 # Define human readable strings that describe this build
 #
 
+# Spoof target build variant because Whatsapp (and maybe others)
+# is checking the "debug" pattern in the Build.DISPLAY variable.
+SPOOFED_TARGET_BUILD_VARIANT := $(TARGET_BUILD_VARIANT)
+ifeq (userdebug,$(TARGET_BUILD_VARIANT))
+    SPOOFED_TARGET_BUILD_VARIANT := user
+endif
+
 # BUILD_ID: detail info; has the same info as the build fingerprint
-BUILD_DESC := e_$(TARGET_DEVICE)-$(TARGET_BUILD_VARIANT) $(PLATFORM_VERSION) $(BUILD_ID) $(BUILD_NUMBER_FROM_FILE) $(BUILD_VERSION_TAGS)
+BUILD_DESC := e_$(TARGET_DEVICE)-$(SPOOFED_TARGET_BUILD_VARIANT) $(PLATFORM_VERSION) $(BUILD_ID) $(BUILD_NUMBER_FROM_FILE) $(BUILD_VERSION_TAGS)
 
 # BUILD_DISPLAY_ID is shown under Settings -> About Phone
 ifeq ($(TARGET_BUILD_VARIANT),user)
