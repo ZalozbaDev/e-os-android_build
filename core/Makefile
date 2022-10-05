@@ -322,8 +322,15 @@ BUILD_VERSION_TAGS += $(BUILD_KEYS)
 BUILD_VERSION_TAGS += $(BUILD_RELEASE_TYPE)
 BUILD_VERSION_TAGS := $(subst $(space),$(comma),$(sort $(BUILD_VERSION_TAGS)))
 
+# Spoof target build variant because Whatsapp (and maybe others)
+# is checking the "debug" pattern in the Build.DISPLAY variable.
+SPOOFED_TARGET_BUILD_VARIANT := $(TARGET_BUILD_VARIANT)
+ifeq (userdebug,$(TARGET_BUILD_VARIANT))
+    SPOOFED_TARGET_BUILD_VARIANT := user
+endif
+
 # A human-readable string that descibes this build in detail.
-build_desc := e_$(TARGET_DEVICE)-$(TARGET_BUILD_VARIANT) $(PLATFORM_VERSION) $(BUILD_ID) $(BUILD_NUMBER_FROM_FILE) $(BUILD_VERSION_TAGS)
+build_desc := e_$(TARGET_DEVICE)-$(SPOOFED_TARGET_BUILD_VARIANT) $(PLATFORM_VERSION) $(BUILD_ID) $(BUILD_NUMBER_FROM_FILE) $(BUILD_VERSION_TAGS)
 $(intermediate_system_build_prop): PRIVATE_BUILD_DESC := $(build_desc)
 
 # The string used to uniquely identify the combined build and product; used by the OTA server.
