@@ -3342,3 +3342,8 @@ define use_soong_sdk_libraries
   $(foreach l,$(1),$(if $(filter $(l),$(SOONG_SDK_VARIANT_MODULES)),\
       $(l).sdk,$(l)))
 endef
+
+# Patch Trichrome to add cert digest at buildtime
+define patch-trichrome
+$(hide) $(PATCH_TRICHROME) $@ $(PRIVATE_CERTIFICATE)
+endef
