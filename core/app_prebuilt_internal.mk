@@ -226,6 +226,7 @@ ifdef LOCAL_DEX_PREOPT
 	mv -f $@ $@.tmp
 	$(PRIVATE_STRIP_SCRIPT) $@.tmp $@
 endif  # LOCAL_DEX_PREOPT
+	$(patch-trichrome)
 	$(sign-package)
 	# No need for align-package because sign-package takes care of alignment
 else  # LOCAL_CERTIFICATE == PRESIGNED
