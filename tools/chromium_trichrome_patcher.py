@@ -21,7 +21,10 @@ def patch_trichrome(infilename, sign_key):
             data = zin.read(info.filename)
             if info.filename == 'AndroidManifest.xml':
                 # Make sure we can find the certdigest
-                data.rindex(orig_certdigest.encode('utf-16-le'))
+                try:
+                    data.rindex(orig_certdigest.encode('utf-16-le'))
+                except:
+                    pass
                 # Replace it
                 data = data.replace(orig_certdigest.encode('utf-16-le'), new_certdigest.encode('utf-16-le'))
             zout.writestr(info, data)
