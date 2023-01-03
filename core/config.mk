@@ -619,6 +619,8 @@ JETIFIER := prebuilts/sdk/tools/jetifier/jetifier-standalone/bin/jetifier-standa
 
 EXTRACT_KERNEL := build/make/tools/extract_kernel.py
 
+PATCH_TRICHROME := build/make/tools/chromium_trichrome_patcher.py
+
 USE_OPENJDK9 := true
 
 ifeq ($(EXPERIMENTAL_USE_OPENJDK9),)

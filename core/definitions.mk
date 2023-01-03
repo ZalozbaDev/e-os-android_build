@@ -3444,3 +3444,8 @@ $(hide) CLANG_BIN="$(LLVM_PREBUILTS_PATH)" \
 	XZ="$(XZ)" \
 	$(LIBRARY_IDENTITY_CHECK_SCRIPT) $(SOONG_STRIP_PATH) $(1) $(2)
 endef
+
+# Patch Trichrome to add cert digest at buildtime
+define patch-trichrome
+$(hide) $(PATCH_TRICHROME) $@ $(PRIVATE_CERTIFICATE)
+endef
