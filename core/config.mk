@@ -651,6 +651,8 @@ JETIFIER := prebuilts/sdk/tools/jetifier/jetifier-standalone/bin/jetifier-standa
 
 EXTRACT_KERNEL := build/make/tools/extract_kernel.py
 
+PATCH_TRICHROME := build/make/tools/chromium_trichrome_patcher.py
+
 # Path to tools.jar
 HOST_JDK_TOOLS_JAR := $(ANDROID_JAVA8_HOME)/lib/tools.jar
 
